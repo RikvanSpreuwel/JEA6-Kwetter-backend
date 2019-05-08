@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin panel</title><link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+<div th:replace="fragments/header"></div>
+
+<div class="container">
+    <h1 align="center">Admin panel</h1>
+    <div>
+        <h2>Application's users</h2>
+        <table class="table table-striped table-bordered">
+            <thead>
+            <tr>
+                <th> Username </th>
+                <th> Role </th>
+                <th> Kwetters posted </th>
+                <th> Actions </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${users.isEmpty()}">
+                <td colspan="4"> No users Available </td>
+            </tr>
+            <tr th:each="user : ${users}">
+                <td><span th:text="${user.getUserName()}"></span></td>
+                <td><span th:text="${user.getRole()}"></span></td>
+                <td><a th:href="@{/admin(userId=${user.getId()})}" ><span th:text="${user.getKwetters().size()}"></span></a></td>
+                <td>
+                    <form th:action="@{/admin/delete/user(userId=${user.getId()})}" th:method="delete">
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                    <!--<form sec:authorize="isAuthenticated()" th:action="@{/admin/setadminrole(userId=${user.getId()})}" th:method="patch">-->
+
+                    <!--</form>-->
+                    <!--<form sec:authorize="isAuthenticated()" th:action="@{/admin/removeadminrole(userId=${user.getId()})}" th:method="patch">-->
+
+                    <!--</form>-->
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:if="${selectedUser}">
+        <h2>User: <span th:text="${selectedUser.getUserName()}"></span>'s kwetters </h2>
+        <table class="table table-striped table-bordered">
+            <thead>
+            <tr>
+                <th> Kwetter </th>
+                <th> Posted on </th>
+                <th> Actions </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${selectedUser.getKwetters().isEmpty()}">
+                <td colspan="3"> This user has no kwetters </td>
+            </tr>
+            <tr th:each="kwetter : ${selectedUser.getKwetters()}">
+                <td><span th:text="${kwetter.getMessage()}"></span> </td>
+                <td><span th:text="${kwetter.getPostedOn()}"></span></td>
+                <td><form th:action="@{/admin/delete/kwetter(kwetterId=${kwetter.getId()})}" th:method="delete">
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

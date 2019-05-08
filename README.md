@@ -1,0 +1,1 @@
+This repository contains the project code of my implementation of the Kwetter casus from the JEA6 canvas course from Fontys Hogescholen Eindhoven.

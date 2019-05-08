@@ -1,0 +1,9 @@
+version: "2.3"
+
+services:
+  kwetter-backend:
+    hostname: localhost
+    container_name: kwetter-backend
+    build: .
+    ports:
+      - 8080:8080

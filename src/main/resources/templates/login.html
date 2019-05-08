@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Login page</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="../static/css/main.css"/>
+</head>
+<body>
+<div th:replace="fragments/header"></div>
+
+<div class="container">
+    <h1 align="center">Login page</h1>
+    <div class="login-form">
+        <form th:action="@{/login}" method="post" class="form-group">
+            <h1 class="h3 mb-3 font-weight-normal">Sign in</h1>
+            <input type="text" id="username" name="username" class="form-control" placeholder="Username" autofocus required/>
+            <input type="password" id="password" name="password" placeholder="Password" class="form-control" required/>
+            <p th:if="${loginError}" class="error">Incorrect Username or Password</p>
+            <button type="submit" class="btn btn-lg btn-primary btn-block btn-sign-in">Sign in</button>
+        </form>
+    </div>
+</div>
+</div>
+</body>
+</html>
