@@ -1,7 +1,7 @@
 package nl.fontys.data.repositories;
 
-import nl.fontys.models.Kwetter;
-import nl.fontys.models.User;
+import nl.fontys.models.entities.Kwetter;
+import nl.fontys.models.entities.User;
 import nl.fontys.utils.DatabaseInserter;
 import org.assertj.core.util.Lists;
 import org.junit.Assert;

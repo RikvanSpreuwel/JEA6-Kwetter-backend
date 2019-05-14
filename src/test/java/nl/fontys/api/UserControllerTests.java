@@ -1,11 +1,10 @@
 package nl.fontys.api;
 
-import nl.fontys.Utils.Exceptions.UserNotFoundException;
-import nl.fontys.api.controllers.KwetterController;
+import nl.fontys.utils.exceptions.UserNotFoundException;
 import nl.fontys.api.controllers.UserController;
 import nl.fontys.data.services.UserService;
-import nl.fontys.models.Role;
-import nl.fontys.models.User;
+import nl.fontys.models.entities.Role;
+import nl.fontys.models.entities.User;
 import nl.fontys.utils.JsonSerializer;
 import org.junit.Test;
 import org.junit.runner.RunWith;

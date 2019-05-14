@@ -1,11 +1,9 @@
 package nl.fontys.data.repositories;
 
 import nl.fontys.data.InMemoryCollectionsDatabase;
-import nl.fontys.models.Kwetter;
+import nl.fontys.models.entities.Kwetter;
 import org.springframework.stereotype.Repository;
 
-import javax.swing.text.html.Option;
-import javax.transaction.NotSupportedException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;

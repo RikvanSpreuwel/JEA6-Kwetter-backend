@@ -1,7 +1,7 @@
 package nl.fontys.api.advice;
 
-import nl.fontys.Utils.Exceptions.KwetterNotFoundException;
-import nl.fontys.Utils.Exceptions.UserNotFoundException;
+import nl.fontys.utils.exceptions.KwetterNotFoundException;
+import nl.fontys.utils.exceptions.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

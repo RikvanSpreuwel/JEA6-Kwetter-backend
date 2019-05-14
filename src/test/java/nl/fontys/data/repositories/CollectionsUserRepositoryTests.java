@@ -1,11 +1,9 @@
 package nl.fontys.data.repositories;
 
 import nl.fontys.data.InMemoryCollectionsDatabase;
-import nl.fontys.models.Role;
-import nl.fontys.models.User;
-import nl.fontys.utils.DatabaseInserter;
+import nl.fontys.models.entities.Role;
+import nl.fontys.models.entities.User;
 import org.assertj.core.util.Lists;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

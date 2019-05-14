@@ -1,17 +1,15 @@
-package nl.fontys.models;
+package nl.fontys.models.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 //import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
-import nl.fontys.Utils.Constants;
-import nl.fontys.Utils.JsonSerializers.KwetterListJsonSerializer;
-import nl.fontys.Utils.JsonSerializers.UserListJsonSerializer;
+import nl.fontys.utils.Constants;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
-import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -25,6 +23,11 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(columnDefinition = "UUID")
     private UUID id;
+
+    @JsonProperty("id")
+    public UUID getId(){
+        return this.id;
+    }
 
     @NotNull(message = "Password cannot be null.")
     @Size(min = 8, message = "Password has a minimum of 8 characters.")
@@ -65,16 +68,13 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @JsonSerialize(using = UserListJsonSerializer.class)
     @JoinTable(name = "follow")
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
     private List<User> following;
 
-    @JsonSerialize(using = UserListJsonSerializer.class)
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.DETACH, mappedBy = "following")
     private List<User> followers;
 
-    @JsonSerialize(using = KwetterListJsonSerializer.class)
     @OneToMany(mappedBy = "author", fetch = FetchType.EAGER, orphanRemoval = true)
     private List<Kwetter> kwetters;
 

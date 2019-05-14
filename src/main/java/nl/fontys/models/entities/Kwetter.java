@@ -1,16 +1,13 @@
-package nl.fontys.models;
+package nl.fontys.models.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Getter;
 import lombok.Setter;
-import nl.fontys.Utils.JsonSerializers.UserJsonSerializer;
-import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 import java.util.UUID;
@@ -33,7 +30,6 @@ public class Kwetter {
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", locale = "UTC")
     private Date postedOn;
 
-    @JsonSerialize(using = UserJsonSerializer.class)
     @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "authorId")
     @Getter

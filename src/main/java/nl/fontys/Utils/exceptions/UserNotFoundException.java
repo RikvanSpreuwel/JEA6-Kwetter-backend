@@ -1,4 +1,4 @@
-package nl.fontys.Utils.Exceptions;
+package nl.fontys.utils.exceptions;
 
 import java.util.UUID;
 

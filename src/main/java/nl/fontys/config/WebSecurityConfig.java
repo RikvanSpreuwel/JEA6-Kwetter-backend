@@ -1,6 +1,6 @@
 package nl.fontys.config;
 
-import nl.fontys.Utils.Constants;
+import nl.fontys.utils.Constants;
 import nl.fontys.data.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

@@ -1,6 +1,6 @@
 package nl.fontys.data.services.interfaces;
 
-import nl.fontys.models.Kwetter;
+import nl.fontys.models.entities.Kwetter;
 
 import java.util.List;
 import java.util.UUID;

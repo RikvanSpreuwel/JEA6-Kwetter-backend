@@ -1,9 +1,8 @@
 package nl.fontys.data;
 
-import nl.fontys.models.Kwetter;
-import nl.fontys.models.Role;
-import nl.fontys.models.User;
-import org.springframework.util.CollectionUtils;
+import nl.fontys.models.entities.Kwetter;
+import nl.fontys.models.entities.Role;
+import nl.fontys.models.entities.User;
 
 import java.util.*;
 import java.util.stream.Collectors;
