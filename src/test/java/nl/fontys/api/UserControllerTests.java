@@ -1,13 +1,20 @@
 package nl.fontys.api;
 
+import nl.fontys.models.resources.KwetterResource;
+import nl.fontys.models.resources.UserResource;
 import nl.fontys.utils.exceptions.UserNotFoundException;
 import nl.fontys.api.controllers.UserController;
 import nl.fontys.data.services.UserService;
 import nl.fontys.models.entities.Role;
 import nl.fontys.models.entities.User;
 import nl.fontys.utils.JsonSerializer;
+import nl.fontys.utils.modelMapper.converters.ToKwetterResourceModelConverter;
+import nl.fontys.utils.modelMapper.converters.ToUserResourceModelConverter;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -35,27 +42,44 @@ public class UserControllerTests {
     @MockBean
     private UserService userService;
 
+    @MockBean
+    private ModelMapper modelMapper;
+
+    private static ModelMapper modelMapperForTesting;
+
+    @BeforeClass
+    public static void setup(){
+        modelMapperForTesting = new ModelMapper();
+        modelMapperForTesting.addConverter(new ToKwetterResourceModelConverter());
+        modelMapperForTesting.addConverter(new ToUserResourceModelConverter());
+    }
+
     @Test
     public void get_All_ReturnsArray() throws Exception {
         final User user = createTestUser();
         user.setId(UUID.randomUUID());
+
         final List<User> users = new ArrayList<User>(){{add(user);}};
 
         given(userService.findAll()).willReturn(users);
+        given(modelMapper.map(users, new TypeToken<List<UserResource>>(){}.getType()))
+                .willReturn(modelMapperForTesting.map(users, new TypeToken<List<UserResource>>(){}.getType()));
 
         mvc.perform(get("/users"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].id", is(user.getId().toString())));
+                .andExpect(jsonPath("$._embedded.userResources", hasSize(1)))
+                .andExpect(jsonPath("$._embedded.userResources[0].userId", is(user.getId().toString())));
     }
 
     @Test
     public void get_All_EmptyListOfUsers_ReturnsEmptyArray() throws Exception {
         given(userService.findAll()).willReturn(new ArrayList<>());
+        given(modelMapper.map(new ArrayList<>(), new TypeToken<List<UserResource>>(){}.getType()))
+                .willReturn(modelMapperForTesting.map(new ArrayList<>(), new TypeToken<List<UserResource>>(){}.getType()));
 
         mvc.perform(get("/users"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(0)));
+                .andExpect(content().string("{}"));
     }
 
     @Test
@@ -65,21 +89,25 @@ public class UserControllerTests {
         final List<User> users = new ArrayList<User>(){{add(user);}};
 
         given(userService.findAllByUserName("test")).willReturn(users);
+        given(modelMapper.map(users, new TypeToken<List<UserResource>>(){}.getType()))
+                .willReturn(modelMapperForTesting.map(users, new TypeToken<List<UserResource>>(){}.getType()));
 
         mvc.perform(get("/users/search?userName=test"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].id", is(user.getId().toString())));
+                .andExpect(jsonPath("$._embedded.userResources", hasSize(1)))
+                .andExpect(jsonPath("$._embedded.userResources[0].userId", is(user.getId().toString())));
 
     }
 
     @Test
     public void get_All_ByUserName_NoResults_ReturnsEmptyArray() throws Exception{
         given(userService.findAll()).willReturn(new ArrayList<>());
+        given(modelMapper.map(new ArrayList<>(), new TypeToken<List<UserResource>>(){}.getType()))
+                .willReturn(modelMapperForTesting.map(new ArrayList<>(), new TypeToken<List<UserResource>>(){}.getType()));
 
         mvc.perform(get("/users/search?userName=test"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(0)));
+                .andExpect(content().string("{}"));
     }
 
     @Test
@@ -88,10 +116,12 @@ public class UserControllerTests {
         user.setId(UUID.randomUUID());
 
         given(userService.findById(user.getId())).willReturn(user);
+        given(modelMapper.map(user, UserResource.class))
+                .willReturn(modelMapperForTesting.map(user, UserResource.class));
 
         mvc.perform(get("/users/" + user.getId()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(user.getId().toString())));
+                .andExpect(jsonPath("$.userId", is(user.getId().toString())));
     }
 
     @Test
@@ -101,12 +131,14 @@ public class UserControllerTests {
         postUserCopyWithId.setId(UUID.randomUUID());
 
         given(userService.save(postUser)).willReturn(postUserCopyWithId);
+        given(modelMapper.map(postUserCopyWithId, UserResource.class))
+                .willReturn(modelMapperForTesting.map(postUserCopyWithId, UserResource.class));
 
         mvc.perform(post("/users")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonSerializer.toJson(postUser)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(postUserCopyWithId.getId().toString())));
+                .andExpect(jsonPath("$.userId", is(postUserCopyWithId.getId().toString())));
     }
 
     @Test
@@ -115,13 +147,14 @@ public class UserControllerTests {
         putUser.setId(UUID.randomUUID());
 
         given(userService.update(putUser)).willReturn(putUser);
+        given(modelMapper.map(putUser, UserResource.class))
+                .willReturn(modelMapperForTesting.map(putUser, UserResource.class));
 
-        String json = JsonSerializer.toJson(putUser);
         mvc.perform(put("/users")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonSerializer.toJson(putUser)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(putUser.getId().toString())));
+                .andExpect(jsonPath("$.userId", is(putUser.getId().toString())));
     }
 
     @Test

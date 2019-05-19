@@ -3,6 +3,7 @@ package nl.fontys.models.resources;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import nl.fontys.api.controllers.KwetterController;
+import nl.fontys.api.controllers.UserController;
 import nl.fontys.models.entities.User;
 import org.springframework.hateoas.ResourceSupport;
 import java.util.Date;
@@ -26,11 +27,9 @@ public class KwetterResource extends ResourceSupport {
         this.author = author;
 
         add(linkTo(KwetterController.class).withRel("Kwetters"));
-        add(linkTo(methodOn(KwetterController.class).searchByMessage("message")).withRel("SearchByMessage"));
-        if (author == null) {
-            add(linkTo(KwetterController.class).slash("searchbyauthorid").slash("authorId").withRel("SearchByAuthor"));
-        } else {
+        if (author != null) {
             add(linkTo(methodOn(KwetterController.class).searchByAuthorId(author.getUserId())).withRel("SearchByAuthor"));
+            add(linkTo(methodOn(UserController.class).get(author.getUserId())).withRel("Author"));
         }
         add(linkTo(methodOn(KwetterController.class).get(kwetterId)).withSelfRel());
     }

@@ -14,6 +14,7 @@ public class ToKwetterResourceModelConverter extends AbstractConverter<Kwetter, 
     }
 
     private UserResource getAuthorWithoutRecursion(User user){
+        if (user == null) return null;
         return new UserResource(user.getId(), user.getPassword(), user.getEmail(), user.getFirstName(),
                 user.getLastName(), user.getUserName(), user.getDateOfBirth(), user.getBio(), user.getLocation(), user.getProfilePicture(),
                 user.getRole(), null, null, null);

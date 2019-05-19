@@ -55,9 +55,7 @@ public class UserResource extends ResourceSupport {
         this.followers = followers;
         this.kwetters = kwetters;
 
-
         add(linkTo(UserController.class).withRel("Users"));
-        add(linkTo(methodOn(UserController.class).search("userNameToSearch")).withRel("Search"));
         add(linkTo(methodOn(KwetterController.class).getUserTimeline(userId)).withRel("Timeline"));
         add(linkTo(methodOn(UserController.class).get(userId)).withSelfRel());
     }
