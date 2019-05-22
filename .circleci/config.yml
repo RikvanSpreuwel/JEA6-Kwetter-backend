@@ -4,9 +4,9 @@ workflows:
   version: 2.1
   build-test:
     jobs:
-      build-test:
-        context:
-          Kwetter
+      - build-test:
+          context:
+            Kwetter
 
 jobs:
   build-test:
