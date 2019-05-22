@@ -4,9 +4,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import nl.fontys.api.controllers.KwetterController;
 import nl.fontys.api.controllers.UserController;
-import nl.fontys.models.entities.User;
 import org.springframework.hateoas.ResourceSupport;
 import java.util.Date;
+import java.util.Objects;
 import java.util.UUID;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
@@ -32,5 +32,21 @@ public class KwetterResource extends ResourceSupport {
             add(linkTo(methodOn(UserController.class).get(author.getUserId())).withRel("Author"));
         }
         add(linkTo(methodOn(KwetterController.class).get(kwetterId)).withSelfRel());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        KwetterResource that = (KwetterResource) o;
+        return kwetterId.equals(that.kwetterId) &&
+                message.equals(that.message) &&
+                postedOn.equals(that.postedOn);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), kwetterId, message, postedOn);
     }
 }

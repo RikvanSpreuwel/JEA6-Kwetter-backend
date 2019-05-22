@@ -1,18 +1,15 @@
 package nl.fontys.models.resources;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Getter;
 import nl.fontys.api.controllers.KwetterController;
 import nl.fontys.api.controllers.UserController;
-import nl.fontys.models.entities.Kwetter;
 import nl.fontys.models.entities.Role;
-import nl.fontys.models.entities.User;
 import org.springframework.hateoas.ResourceSupport;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
@@ -58,5 +55,29 @@ public class UserResource extends ResourceSupport {
         add(linkTo(UserController.class).withRel("Users"));
         add(linkTo(methodOn(KwetterController.class).getUserTimeline(userId)).withRel("Timeline"));
         add(linkTo(methodOn(UserController.class).get(userId)).withSelfRel());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        UserResource that = (UserResource) o;
+        return Objects.equals(userId, that.userId) &&
+                Objects.equals(password, that.password) &&
+                Objects.equals(email, that.email) &&
+                Objects.equals(firstName, that.firstName) &&
+                Objects.equals(lastName, that.lastName) &&
+                Objects.equals(userName, that.userName) &&
+                Objects.equals(dateOfBirth, that.dateOfBirth) &&
+                Objects.equals(bio, that.bio) &&
+                Objects.equals(location, that.location) &&
+                Objects.equals(profilePicture, that.profilePicture) &&
+                role == that.role;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), userId, password, email, firstName, lastName, userName, dateOfBirth, bio, location, profilePicture, role);
     }
 }

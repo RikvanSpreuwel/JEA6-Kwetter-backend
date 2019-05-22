@@ -2,8 +2,6 @@ package nl.fontys.models.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-//import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 import nl.fontys.utils.Constants;
@@ -29,7 +27,6 @@ public class User {
         return this.id;
     }
 
-    @NotNull(message = "Password cannot be null.")
     @Size(min = 8, message = "Password has a minimum of 8 characters.")
     private String password;
 
@@ -176,15 +173,6 @@ public class User {
                 Objects.equals(profilePicture, user.profilePicture) &&
                 role == user.role;
     }
-
-    private boolean idEquals(UUID userId){
-        if (id == null || userId == null){
-            return (id == null && userId == null);
-        } else {
-            return id.equals(userId);
-        }
-    }
-
 
     @Override
     public int hashCode() {

@@ -1,7 +1,7 @@
-package nl.fontys.utils.modelMapper;
+package nl.fontys.utils.modelmapper;
 
-import nl.fontys.utils.modelMapper.converters.ToKwetterResourceModelConverter;
-import nl.fontys.utils.modelMapper.converters.ToUserResourceModelConverter;
+import nl.fontys.utils.modelmapper.converters.ToKwetterResourceModelConverter;
+import nl.fontys.utils.modelmapper.converters.ToUserResourceModelConverter;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;

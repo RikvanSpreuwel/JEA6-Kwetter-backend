@@ -1,8 +1,6 @@
 package nl.fontys.models.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Getter;
 import lombok.Setter;
 import javax.persistence.*;
@@ -68,9 +66,4 @@ public class Kwetter {
     public int hashCode() {
         return Objects.hash(id, message, postedOn);
     }
-
-//    @PreRemove
-//    public void preRemove(){
-//        author = null;
-//    }
 }

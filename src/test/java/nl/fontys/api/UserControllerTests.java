@@ -1,6 +1,5 @@
 package nl.fontys.api;
 
-import nl.fontys.models.resources.KwetterResource;
 import nl.fontys.models.resources.UserResource;
 import nl.fontys.utils.exceptions.UserNotFoundException;
 import nl.fontys.api.controllers.UserController;
@@ -8,8 +7,8 @@ import nl.fontys.data.services.UserService;
 import nl.fontys.models.entities.Role;
 import nl.fontys.models.entities.User;
 import nl.fontys.utils.JsonSerializer;
-import nl.fontys.utils.modelMapper.converters.ToKwetterResourceModelConverter;
-import nl.fontys.utils.modelMapper.converters.ToUserResourceModelConverter;
+import nl.fontys.utils.modelmapper.converters.ToKwetterResourceModelConverter;
+import nl.fontys.utils.modelmapper.converters.ToUserResourceModelConverter;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;

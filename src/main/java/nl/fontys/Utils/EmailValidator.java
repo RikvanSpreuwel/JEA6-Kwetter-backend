@@ -4,6 +4,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class EmailValidator {
+    private EmailValidator(){
+
+    }
 
     public static boolean isValidEmail(final String email){
         Pattern pattern = Pattern.compile(Constants.EMAIL_REGEX, Pattern.CASE_INSENSITIVE);
