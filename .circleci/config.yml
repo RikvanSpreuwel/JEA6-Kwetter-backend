@@ -1,6 +1,8 @@
 version: 2
 jobs:
   build:
+    context:
+      Kwetter
     working_directory: ~/kwetter-backend
 
     docker:
@@ -22,6 +24,15 @@ jobs:
       - run: mvn package
       
       - run: mvn test
+
+      - run:
+          - name: sonarqube
+          - command: |
+              mvn sonar:sonar \
+                -Dsonar.projectKey=RikvanSpreuwel_JEA6-Kwetter-backend \
+                -Dsonar.organization=rikvanspreuwel-github \
+                -Dsonar.host.url=https://sonarcloud.io \
+                -Dsonar.login=$SONAR_LOGIN_BACKEND
 
       - store_test_results: 
           path: target/surefire-reports
