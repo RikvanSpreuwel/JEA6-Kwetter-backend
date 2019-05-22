@@ -1,47 +1,45 @@
-workflows:
-  version: 2
-  jobs:
-    build:
-      context: Kwetter
-      working_directory: ~/kwetter-backend
+jobs:
+  build:
+    context: kwetter
+    working_directory: ~/kwetter-backend
 
-      docker:
-        - image: circleci/openjdk:8-jdk-browsers
+    docker:
+      - image: circleci/openjdk:8-jdk-browsers
 
-      steps:
-        - checkout
+    steps:
+      - checkout
 
-        - restore_cache:
-            key: kwetter-backend-{{ checksum "pom.xml" }}
+      - restore_cache:
+          key: kwetter-backend-{{ checksum "pom.xml" }}
 
-        - run: mvn dependency:go-offline
+      - run: mvn dependency:go-offline
 
-        - save_cache:
-            paths:
-              - ~/.m2
-            key: kwetter-backend-{{ checksum "pom.xml" }}
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: kwetter-backend-{{ checksum "pom.xml" }}
 
-        - run:
-            name: building
-            command: mvn package
+      - run:
+          name: building
+          command: mvn package
 
-        - run:
-            name: testing
-            command: mvn test
+      - run:
+          name: testing
+          command: mvn test
 
-        - run:
-            context: Kwetter
-            name: sonarqube
-            command: |
-              mvn sonar:sonar \
-                -Dsonar.projectKey=RikvanSpreuwel_JEA6-Kwetter-backend \
-                -Dsonar.organization=rikvanspreuwel-github \
-                -Dsonar.host.url=https://sonarcloud.io \
-                -Dsonar.login=$SONAR_LOGIN_BACKEND
+      - run:
+          context: kwetter
+          name: sonarqube
+          command: |
+            mvn sonar:sonar \
+              -Dsonar.projectKey=RikvanSpreuwel_JEA6-Kwetter-backend \
+              -Dsonar.organization=rikvanspreuwel-github \
+              -Dsonar.host.url=https://sonarcloud.io \
+              -Dsonar.login=$SONAR_LOGIN_BACKEND
 
-        - store_test_results:
-            path: target/surefire-reports
+      - store_test_results:
+          path: target/surefire-reports
 
-        - store_artifacts:
-            path: target/demo-java-spring-0.0.1-SNAPSHOT.jar
-        # See https://circleci.com/docs/2.0/deployment-integrations/ for deploy examples
+      - store_artifacts:
+          path: target/demo-java-spring-0.0.1-SNAPSHOT.jar
+      # See https://circleci.com/docs/2.0/deployment-integrations/ for deploy examples
