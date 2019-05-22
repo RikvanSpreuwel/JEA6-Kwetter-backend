@@ -1,8 +1,12 @@
 version: 2.1
-context: Kwetter
-jobs:
-  build:
+
+workflows:
+  version: 2.1
+  build-test:
     context: Kwetter
+
+jobs:
+  build-test:
     working_directory: ~/kwetter-backend
 
     docker:
@@ -30,7 +34,6 @@ jobs:
           command: mvn test
 
       - run:
-          context: Kwetter
           name: sonarqube
           command: |
             mvn sonar:sonar \
