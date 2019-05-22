@@ -1,6 +1,8 @@
 version: 2
 jobs:
+  context: Kwetter
   build:
+    context: Kwetter
     working_directory: ~/kwetter-backend
 
     docker:
