@@ -1,17 +1,12 @@
 version: 2
 jobs:
   build:
-    context:
-      Kwetter
     working_directory: ~/kwetter-backend
 
     docker:
       - image: circleci/openjdk:8-jdk-browsers
 
     steps:
-      context:
-        Kwetter
-      
       - checkout
 
       - restore_cache:
@@ -33,6 +28,7 @@ jobs:
           command: mvn test
 
       - run:
+          context: Kwetter
           name: sonarqube
           command: |
             mvn sonar:sonar \
