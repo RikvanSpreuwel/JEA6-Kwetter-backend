@@ -1,6 +1,6 @@
 version: 2.1
+context: Kwetter
 jobs:
-  context: Kwetter
   build:
     context: Kwetter
     working_directory: ~/kwetter-backend
