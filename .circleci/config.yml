@@ -9,6 +9,9 @@ jobs:
       - image: circleci/openjdk:8-jdk-browsers
 
     steps:
+      context:
+        Kwetter
+      
       - checkout
 
       - restore_cache:
@@ -21,9 +24,13 @@ jobs:
             - ~/.m2
           key: kwetter-backend-{{ checksum "pom.xml" }}
       
-      - run: mvn package
+      - run:
+          name: building
+          command: mvn package
       
-      - run: mvn test
+      - run:
+          name: testing
+          command: mvn test
 
       - run:
           name: sonarqube
