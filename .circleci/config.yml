@@ -26,13 +26,13 @@ jobs:
       - run: mvn test
 
       - run:
-          - name: sonarqube
-          - command: |
-              mvn sonar:sonar \
-                -Dsonar.projectKey=RikvanSpreuwel_JEA6-Kwetter-backend \
-                -Dsonar.organization=rikvanspreuwel-github \
-                -Dsonar.host.url=https://sonarcloud.io \
-                -Dsonar.login=$SONAR_LOGIN_BACKEND
+          name: sonarqube
+          command: |
+            mvn sonar:sonar \
+              -Dsonar.projectKey=RikvanSpreuwel_JEA6-Kwetter-backend \
+              -Dsonar.organization=rikvanspreuwel-github \
+              -Dsonar.host.url=https://sonarcloud.io \
+              -Dsonar.login=$SONAR_LOGIN_BACKEND
 
       - store_test_results: 
           path: target/surefire-reports
