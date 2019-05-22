@@ -1,6 +1,7 @@
 jobs:
+  context: Kwetter
   build:
-    context: kwetter
+    context: Kwetter
     working_directory: ~/kwetter-backend
 
     docker:
@@ -28,7 +29,7 @@ jobs:
           command: mvn test
 
       - run:
-          context: kwetter
+          context: Kwetter
           name: sonarqube
           command: |
             mvn sonar:sonar \

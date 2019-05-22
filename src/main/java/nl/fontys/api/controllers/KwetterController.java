@@ -1,10 +1,8 @@
 package nl.fontys.api.controllers;
 
-import nl.fontys.data.services.KwetterService;
 import nl.fontys.models.resources.KwetterResource;
 import nl.fontys.utils.Constants;
 import nl.fontys.data.services.interfaces.IKwetterService;
-import nl.fontys.models.entities.Kwetter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
-
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
 @RestController
 @RequestMapping(value = Constants.KWETTER_API_BASE_ROUTE, produces = MediaTypes.HAL_JSON_UTF8_VALUE)

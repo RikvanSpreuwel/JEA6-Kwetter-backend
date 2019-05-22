@@ -16,9 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
-
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
 @RestController
 @RequestMapping(value = Constants.USER_API_BASE_ROUTE, produces = MediaTypes.HAL_JSON_UTF8_VALUE)
@@ -34,11 +31,7 @@ public class UserController {
 
     @GetMapping()
     public Resources<UserResource> get(){
-        List<User> users = userService.findAll();
-        Resources<UserResource> resources = new Resources<>(modelMapper.map(users, new TypeToken<List<UserResource>>(){}.getType()));
-
-        return resources; //new Resources<>(modelMapper.map(userService.findAll(),
-//                new TypeToken<Resources<UserResource>>(){}.getType()));
+        return new Resources<>(modelMapper.map(userService.findAll(), new TypeToken<List<UserResource>>(){}.getType()));
     }
 
     @GetMapping(value = "/search")

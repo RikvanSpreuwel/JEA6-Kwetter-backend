@@ -44,7 +44,7 @@ public class InMemoryCollectionsDatabase {
         }
     }
 
-    public void reset(){
+    public static void reset(){
         instance = null;
     }
 
