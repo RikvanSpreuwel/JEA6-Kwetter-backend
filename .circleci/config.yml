@@ -19,11 +19,17 @@ workflows:
 jobs:
   checkout:
     working_directory: ~/kwetter-backend
+
     docker:
       - image: circleci/openjdk:8-jdk-browsers
 
     steps:
       - checkout
+
+      - persist_to_workspace:
+          root: .
+          path:
+            - kwetter-backend
 
   dependencies:
     working_directory: ~/kwetter-backend
@@ -49,7 +55,7 @@ jobs:
       - image: circleci/openjdk:8-jdk-browsers
 
     steps:
-      - checkout
+#      - checkout
 
       #      - restore_cache:
       #          key: kwetter-backend-{{ checksum "pom.xml" }}
