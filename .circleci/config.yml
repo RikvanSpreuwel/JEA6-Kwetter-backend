@@ -64,6 +64,8 @@ jobs:
           paths:
             - ~/.m2
           key: kwetter-backend-{{ checksum "pom.xml" }}
+      
+      - persist_kwetter_workspace
 
   build:
     executor: java
@@ -72,6 +74,7 @@ jobs:
       - run:
           name: building
           command: mvn -B -DskipTests clean package
+      - persist_kwetter_workspace
 
   test:
     executor: java
