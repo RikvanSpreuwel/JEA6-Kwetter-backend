@@ -16,6 +16,21 @@ workflows:
           context:
             Kwetter
 
+
+commands:
+  persist_workspace:
+    steps:
+      - persist_to_workspace:
+          root: .
+          paths: .
+  
+  attach_workspace:
+    steps:
+      - attach_workspace:
+          at: .
+    
+
+
 jobs:
   checkout:
     docker:
@@ -23,19 +38,16 @@ jobs:
 
     steps:
       - checkout
+      - persist_workspace
 
-      - persist_to_workspace:
-          root: .
-          paths: .
-#            - kwetter-backend
+          #not sure if dependencies are persisted to the next job
 
   dependencies:
     docker:
       - image: circleci/openjdk:8-jdk-browsers
 
     steps:
-      - attach_workspace:
-          at: .
+      - attach_workspace
 
       - restore_cache:
           key: kwetter-backend-{{ checksum "pom.xml" }}
@@ -52,8 +64,7 @@ jobs:
       - image: circleci/openjdk:8-jdk-browsers
 
     steps:
-      - attach_workspace:
-            at: .
+      - attach_workspace
 
       - run:
           name: building
