@@ -24,7 +24,6 @@ workflows:
           context:
             kwetter
 
-
 executors:
   java:
     docker:
@@ -72,7 +71,7 @@ jobs:
       - attach_kwetter_workspace
       - run:
           name: building
-          command: mvn package
+          command: mvn -B -DskipTests clean package
 
   test:
     executor: java
