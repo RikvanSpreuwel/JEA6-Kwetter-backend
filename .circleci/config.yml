@@ -38,6 +38,9 @@ jobs:
       - image: circleci/openjdk:8-jdk-browsers
 
     steps:
+      - attach_workspace:
+          at: .
+          
       - restore_cache:
           key: kwetter-backend-{{ checksum "pom.xml" }}
 
