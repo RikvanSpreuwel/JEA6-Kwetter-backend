@@ -22,7 +22,7 @@ workflows:
           requires:
             - build
           context:
-            kwetter
+            Kwetter
 
 executors:
   java:
