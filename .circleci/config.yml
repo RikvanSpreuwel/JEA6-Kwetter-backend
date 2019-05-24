@@ -41,6 +41,11 @@ commands:
       - attach_workspace:
           at: .
 
+  restore_cache_dependencies:
+    steps:
+      - restore_cache:
+          key: kwetter-backend-{{ checksum "pom.xml" }}
+
 jobs:
   checkout:
     executor: java
@@ -54,9 +59,7 @@ jobs:
     executor: java
     steps:
       - attach_kwetter_workspace
-
-      - restore_cache:
-          key: kwetter-backend-{{ checksum "pom.xml" }}
+      - restore_cache_dependencies
 
       - run: mvn dependency:go-offline
 
@@ -64,13 +67,12 @@ jobs:
           paths:
             - ~/.m2
           key: kwetter-backend-{{ checksum "pom.xml" }}
-      
-      - persist_kwetter_workspace
 
   build:
     executor: java
     steps:
       - attach_kwetter_workspace
+      - restore_cache_dependencies
       - run:
           name: building
           command: mvn -B -DskipTests clean package
@@ -80,6 +82,7 @@ jobs:
     executor: java
     steps:
       - attach_kwetter_workspace
+      - restore_cache_dependencies
       - run:
           name: testing
           command: mvn test
@@ -91,6 +94,7 @@ jobs:
     executor: java
     steps:
       - attach_kwetter_workspace
+      - restore_cache_dependencies
       - run:
           name: sonarqube
           command: |
