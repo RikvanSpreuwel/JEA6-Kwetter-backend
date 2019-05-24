@@ -20,7 +20,7 @@ workflows:
 
       - sonarqube:
           requires:
-            - build
+            - test
           context:
             Kwetter
 
@@ -70,12 +70,14 @@ jobs:
 
   build:
     executor: java
-    steps:
+    steps: 
       - attach_kwetter_workspace
       - restore_cache_dependencies
+
       - run:
           name: building
           command: mvn -B -DskipTests clean package
+
       - persist_kwetter_workspace
 
   test:
@@ -83,18 +85,22 @@ jobs:
     steps:
       - attach_kwetter_workspace
       - restore_cache_dependencies
+
       - run:
           name: testing
           command: mvn test
 
       - store_test_results:
           path: target/surefire-reports 
+
+      - persist_kwetter_workspace
   
   sonarqube:
     executor: java
     steps:
       - attach_kwetter_workspace
       - restore_cache_dependencies
+
       - run:
           name: sonarqube
           command: |
