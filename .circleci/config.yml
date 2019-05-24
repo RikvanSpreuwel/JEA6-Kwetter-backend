@@ -28,25 +28,25 @@ commands:
     steps:
       - attach_workspace:
           at: .
+  
+  java_executer:
+    docker:
+      - image: circleci/openjdk:8-jdk-browsers
     
 
 
 jobs:
   checkout:
-    docker:
-      - image: circleci/openjdk:8-jdk-browsers
-
     steps:
+      - java_executer
       - checkout
       - persist_kwetter_workspace
 
           #not sure if dependencies are persisted to the next job
 
   dependencies:
-    docker:
-      - image: circleci/openjdk:8-jdk-browsers
-
     steps:
+      - java_executer
       - attach_kwetter_workspace
 
       - restore_cache:
@@ -59,11 +59,10 @@ jobs:
             - ~/.m2
           key: kwetter-backend-{{ checksum "pom.xml" }}
 
-  build-test:
-    docker:
-      - image: circleci/openjdk:8-jdk-browsers
 
+  build-test:
     steps:
+      - java_executer
       - attach_kwetter_workspace
 
       - run:
