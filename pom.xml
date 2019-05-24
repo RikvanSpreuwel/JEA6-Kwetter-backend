@@ -18,6 +18,11 @@
 
     <properties>
         <java.version>1.8</java.version>
+	<sonar.projectName>Kwetter-backend</sonar.projectName>
+	<sonar.sources>src/main</sonar.sources>
+	<sonar.jacoco.reportPath>targec/jacoco.exec</sonar.jacoco.reportPath>
+	<sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
+	<sonar.coverage.exclusions>/modelmapper</sonar.coverage.exclusions>
     </properties>
 
 
