@@ -22,8 +22,7 @@
 	    <sonar.sources>src/main</sonar.sources>
 	    <sonar.jacoco.reportPath>target/jacoco.exec</sonar.jacoco.reportPath>
 	    <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
-	    <sonar.coverage.exclusions>**/modelmapper/*</sonar.coverage.exclusions>
-        <sonar.test.exclusions>**/modelmapper/*</sonar.test.exclusions>
+	    <sonar.coverage.exclusions>**/modelmapper/**/*</sonar.coverage.exclusions>
     </properties>
 
 
