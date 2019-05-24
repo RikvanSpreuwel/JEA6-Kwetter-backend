@@ -28,8 +28,8 @@ jobs:
 
       - persist_to_workspace:
           root: .
-          path:
-            - kwetter-backend
+#          path:
+#            - kwetter-backend
 
   dependencies:
     working_directory: ~/kwetter-backend
