@@ -18,8 +18,6 @@ workflows:
 
 jobs:
   checkout:
-    working_directory: ~/kwetter-backend
-
     docker:
       - image: circleci/openjdk:8-jdk-browsers
 
@@ -32,15 +30,13 @@ jobs:
 #            - kwetter-backend
 
   dependencies:
-    working_directory: ~/kwetter-backend
-
     docker:
       - image: circleci/openjdk:8-jdk-browsers
 
     steps:
       - attach_workspace:
           at: .
-          
+
       - restore_cache:
           key: kwetter-backend-{{ checksum "pom.xml" }}
 
@@ -52,23 +48,12 @@ jobs:
           key: kwetter-backend-{{ checksum "pom.xml" }}
 
   build-test:
-    working_directory: ~/kwetter-backend
-
     docker:
       - image: circleci/openjdk:8-jdk-browsers
 
     steps:
-#      - checkout
-
-      #      - restore_cache:
-      #          key: kwetter-backend-{{ checksum "pom.xml" }}
-      #
-      #      - run: mvn dependency:go-offline
-      #
-      #      - save_cache:
-      #          paths:
-      #            - ~/.m2
-      #          key: kwetter-backend-{{ checksum "pom.xml" }}
+      - attach_workspace:
+            at: .
 
       - run:
           name: building
@@ -93,3 +78,17 @@ jobs:
       - store_artifacts:
           path: target/demo-java-spring-0.0.1-SNAPSHOT.jar
       # See https://circleci.com/docs/2.0/deployment-integrations/ for deploy examples
+
+
+
+            #      - checkout
+
+            #      - restore_cache:
+            #          key: kwetter-backend-{{ checksum "pom.xml" }}
+            #
+            #      - run: mvn dependency:go-offline
+            #
+            #      - save_cache:
+            #          paths:
+          #            - ~/.m2
+          #          key: kwetter-backend-{{ checksum "pom.xml" }}
