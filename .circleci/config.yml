@@ -11,11 +11,14 @@ workflows:
             - checkout
 
       - build-test:
+          requires:
+            - dependencies
           context:
             Kwetter
 
 jobs:
   checkout:
+    working_directory: ~/kwetter-backend
     docker:
       - image: circleci/openjdk:8-jdk-browsers
 
