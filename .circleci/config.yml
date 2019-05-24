@@ -16,6 +16,10 @@ workflows:
           context:
             Kwetter
 
+executors:
+  java:
+    docker:
+      - image: circleci/openjdk:8-jdk-browsers
 
 commands:
   persist_kwetter_workspace:
@@ -28,25 +32,19 @@ commands:
     steps:
       - attach_workspace:
           at: .
-  
-  java_executer:
-    docker:
-      - image: circleci/openjdk:8-jdk-browsers
-    
-
 
 jobs:
   checkout:
+    executor: java
     steps:
-      - java_executer
       - checkout
       - persist_kwetter_workspace
 
           #not sure if dependencies are persisted to the next job
 
   dependencies:
+    executor: java
     steps:
-      - java_executer
       - attach_kwetter_workspace
 
       - restore_cache:
@@ -61,8 +59,8 @@ jobs:
 
 
   build-test:
+    executor: java
     steps:
-      - java_executer
       - attach_kwetter_workspace
 
       - run:
