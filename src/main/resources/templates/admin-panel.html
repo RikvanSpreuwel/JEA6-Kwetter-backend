@@ -33,12 +33,6 @@
                     <form th:action="@{/admin/delete/user(userId=${user.getId()})}" th:method="delete">
                         <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                     </form>
-                    <!--<form sec:authorize="isAuthenticated()" th:action="@{/admin/setadminrole(userId=${user.getId()})}" th:method="patch">-->
-
-                    <!--</form>-->
-                    <!--<form sec:authorize="isAuthenticated()" th:action="@{/admin/removeadminrole(userId=${user.getId()})}" th:method="patch">-->
-
-                    <!--</form>-->
                 </td>
             </tr>
             </tbody>
