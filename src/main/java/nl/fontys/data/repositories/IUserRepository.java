@@ -1,6 +1,6 @@
 package nl.fontys.data.repositories;
 
-import nl.fontys.models.User;
+import nl.fontys.models.entities.User;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;

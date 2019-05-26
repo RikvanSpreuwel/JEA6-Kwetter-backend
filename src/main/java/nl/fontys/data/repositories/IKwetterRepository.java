@@ -1,7 +1,6 @@
 package nl.fontys.data.repositories;
 
-import nl.fontys.models.Kwetter;
-import org.springframework.data.jpa.repository.JpaRepository;
+import nl.fontys.models.entities.Kwetter;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 

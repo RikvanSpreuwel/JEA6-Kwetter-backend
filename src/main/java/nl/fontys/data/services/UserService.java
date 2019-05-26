@@ -1,12 +1,12 @@
 package nl.fontys.data.services;
 
 import com.google.common.collect.Lists;
-import nl.fontys.Utils.EmailValidator;
-import nl.fontys.Utils.Exceptions.UserNotFoundException;
+import nl.fontys.utils.EmailValidator;
+import nl.fontys.utils.exceptions.UserNotFoundException;
 import nl.fontys.data.repositories.IUserRepository;
 import nl.fontys.data.repositories.JPAUserRepository;
 import nl.fontys.data.services.interfaces.IUserService;
-import nl.fontys.models.User;
+import nl.fontys.models.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -105,7 +105,7 @@ public class UserService implements IUserService {
 
     @Override
     public User login(String email, String password) {
-        if (email == null) throw new IllegalArgumentException("The email parameter cannot be null.");;
+        if (email == null) throw new IllegalArgumentException("The email parameter cannot be null.");
         if (!EmailValidator.isValidEmail(email)) throw new IllegalArgumentException("The given email is not in correct email format.");
         if (password == null) throw new IllegalArgumentException("The password parameter cannot be null.");
         if (password.length() < 8) throw new IllegalArgumentException("The password must be at least 8 characters.");

@@ -1,6 +1,6 @@
 package nl.fontys.data.services.interfaces;
 
-import nl.fontys.models.User;
+import nl.fontys.models.entities.User;
 
 import java.util.List;
 import java.util.UUID;

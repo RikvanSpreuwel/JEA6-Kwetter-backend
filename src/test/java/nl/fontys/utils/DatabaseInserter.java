@@ -2,12 +2,11 @@ package nl.fontys.utils;
 
 import nl.fontys.data.repositories.JPAKwetterRepository;
 import nl.fontys.data.repositories.JPAUserRepository;
-import nl.fontys.models.Kwetter;
-import nl.fontys.models.Role;
-import nl.fontys.models.User;
+import nl.fontys.models.entities.Kwetter;
+import nl.fontys.models.entities.Role;
+import nl.fontys.models.entities.User;
 
 import java.util.Calendar;
-import java.util.List;
 
 public class DatabaseInserter {
     public static void insertMockData(final JPAKwetterRepository kwetterRepository, final JPAUserRepository userRepository){

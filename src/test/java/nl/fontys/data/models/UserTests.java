@@ -1,8 +1,8 @@
 package nl.fontys.data.models;
 
-import nl.fontys.models.Kwetter;
-import nl.fontys.models.Role;
-import nl.fontys.models.User;
+import nl.fontys.models.entities.Kwetter;
+import nl.fontys.models.entities.Role;
+import nl.fontys.models.entities.User;
 import nl.fontys.utils.TestConstants;
 import org.junit.Assert;
 import org.junit.Before;

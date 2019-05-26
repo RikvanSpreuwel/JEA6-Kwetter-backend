@@ -1,15 +1,15 @@
 package nl.fontys.data.services;
 
 import com.google.common.collect.Lists;
-import nl.fontys.Utils.Exceptions.KwetterNotFoundException;
-import nl.fontys.Utils.Exceptions.UserNotFoundException;
+import nl.fontys.utils.exceptions.KwetterNotFoundException;
+import nl.fontys.utils.exceptions.UserNotFoundException;
 import nl.fontys.data.repositories.IKwetterRepository;
 import nl.fontys.data.repositories.IUserRepository;
 import nl.fontys.data.repositories.JPAKwetterRepository;
 import nl.fontys.data.repositories.JPAUserRepository;
 import nl.fontys.data.services.interfaces.IKwetterService;
-import nl.fontys.models.Kwetter;
-import nl.fontys.models.User;
+import nl.fontys.models.entities.Kwetter;
+import nl.fontys.models.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

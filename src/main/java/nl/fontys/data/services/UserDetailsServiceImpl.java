@@ -1,7 +1,7 @@
 package nl.fontys.data.services;
 
 import nl.fontys.data.repositories.JPAUserRepository;
-import nl.fontys.models.User;
+import nl.fontys.models.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -25,7 +25,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     @Transactional
-    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String userName) {
         if (!userRepository.findByUserName(userName).isPresent()) throw new UsernameNotFoundException(userName);
         final User user = userRepository.findByUserName(userName).get();
 

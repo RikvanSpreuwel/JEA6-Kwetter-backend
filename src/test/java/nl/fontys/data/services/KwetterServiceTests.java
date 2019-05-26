@@ -1,12 +1,12 @@
 package nl.fontys.data.services;
 
-import nl.fontys.Utils.Exceptions.KwetterNotFoundException;
-import nl.fontys.Utils.Exceptions.UserNotFoundException;
+import nl.fontys.utils.exceptions.KwetterNotFoundException;
+import nl.fontys.utils.exceptions.UserNotFoundException;
 import nl.fontys.data.repositories.JPAKwetterRepository;
 import nl.fontys.data.repositories.JPAUserRepository;
 import nl.fontys.data.services.interfaces.IKwetterService;
-import nl.fontys.models.Kwetter;
-import nl.fontys.models.User;
+import nl.fontys.models.entities.Kwetter;
+import nl.fontys.models.entities.User;
 import nl.fontys.utils.DatabaseInserter;
 import nl.fontys.utils.TestConstants;
 import org.assertj.core.util.Lists;
