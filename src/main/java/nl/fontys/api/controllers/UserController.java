@@ -68,7 +68,6 @@ public class UserController {
     @GetMapping(value = "/getcurrentuser")
     public @ResponseBody
     UserResource getCurrentUser(Authentication authentication) {
-        //final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         final String username = (String) authentication.getPrincipal();
 
         return userService.findAllByUserName(username).isEmpty() ? null : modelMapper.map(userService.findAllByUserName(username).get(0), UserResource.class);

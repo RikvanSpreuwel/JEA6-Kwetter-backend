@@ -21,11 +21,10 @@ public class CustomCorsFilter implements Filter {
     @Override
     public void doFilter(ServletRequest req, ServletResponse resp,
                          FilterChain chain) throws IOException, ServletException {
-
         HttpServletResponse response = (HttpServletResponse) resp;
         HttpServletRequest request = (HttpServletRequest) req;
-        String s = request.getHeader("Origin");
-        response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
+        
+        response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin") != null ? request.getHeader("Origin") : "");
         response.setHeader("Vary", "Origin");
         response.setHeader("Access-Control-Allow-Credentials", "true");
         response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE, PUT");
