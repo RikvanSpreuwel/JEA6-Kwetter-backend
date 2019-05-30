@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.Resources;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -67,9 +66,8 @@ public class UserController {
 
     @GetMapping(value = "/getcurrentuser")
     public @ResponseBody
-    UserResource getCurrentUser() {
-        final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        final String username = (String) auth.getPrincipal();
+    UserResource getCurrentUser(Authentication authentication) {
+        final String username = (String) authentication.getPrincipal();
 
         return userService.findAllByUserName(username).isEmpty() ? null : modelMapper.map(userService.findAllByUserName(username).get(0), UserResource.class);
     }

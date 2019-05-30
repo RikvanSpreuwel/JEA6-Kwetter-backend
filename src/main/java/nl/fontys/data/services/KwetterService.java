@@ -10,6 +10,7 @@ import nl.fontys.data.repositories.JPAUserRepository;
 import nl.fontys.data.services.interfaces.IKwetterService;
 import nl.fontys.models.entities.Kwetter;
 import nl.fontys.models.entities.User;
+import nl.fontys.websocket.MessageHandlingController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,11 +21,13 @@ public class KwetterService implements IKwetterService {
     private IKwetterRepository kwetterRepository;
 
     private IUserRepository userRepository;
+    private MessageHandlingController messageHandlingController;
 
     @Autowired
-    public KwetterService(JPAKwetterRepository kwetterRepository, JPAUserRepository userRepository){
+    public KwetterService(JPAKwetterRepository kwetterRepository, JPAUserRepository userRepository, MessageHandlingController messageHandlingController){
         this.kwetterRepository = kwetterRepository;
         this.userRepository = userRepository;
+        this.messageHandlingController = messageHandlingController;
     }
 
     @Override
@@ -82,6 +85,10 @@ public class KwetterService implements IKwetterService {
         final User poster = userRepository.findById(posterId).get();
 
         final Kwetter kwetter = poster.postKwetter(message);
+
+        final Kwetter savedKwetter = kwetterRepository.save(kwetter);
+
+        messageHandlingController.send(savedKwetter);
 
         return kwetterRepository.save(kwetter);
     }

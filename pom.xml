@@ -20,9 +20,6 @@
         <java.version>1.8</java.version>
 	    <sonar.projectName>Kwetter-backend</sonar.projectName>
 	    <sonar.sources>src/main</sonar.sources>
-	    <sonar.jacoco.reportPath>target/jacoco.exec</sonar.jacoco.reportPath>
-	    <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
-	    <sonar.coverage.exclusions>**/modelmapper/**/*</sonar.coverage.exclusions>
     </properties>
 
 
@@ -100,6 +97,20 @@
             <artifactId>modelmapper</artifactId>
             <version>2.3.2</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-websocket -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-websocket</artifactId>
+            <version>5.1.7.RELEASE</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-messaging -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-messaging</artifactId>
+            <version>5.1.7.RELEASE</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -117,6 +128,13 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.2</version>
+		        <configuration>
+                    <excludes>
+                        <exclude>**/config/*</exclude>
+                        <exclude>**/websocket/*</exclude>
+                        <exclude>**/utils/modelMapper/*</exclude>
+                    </excludes>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>
