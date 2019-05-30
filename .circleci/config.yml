@@ -53,8 +53,6 @@ jobs:
       - checkout
       - persist_kwetter_workspace
 
-          #not sure if dependencies are persisted to the next job
-
   dependencies:
     executor: java
     steps:
