@@ -7,8 +7,8 @@ import nl.fontys.data.services.UserService;
 import nl.fontys.models.entities.Role;
 import nl.fontys.models.entities.User;
 import nl.fontys.utils.JsonSerializer;
-import nl.fontys.utils.modelmapper.converters.ToKwetterResourceModelConverter;
-import nl.fontys.utils.modelmapper.converters.ToUserResourceModelConverter;
+import nl.fontys.utils.modelMapper.converters.ToKwetterResourceModelConverter;
+import nl.fontys.utils.modelMapper.converters.ToUserResourceModelConverter;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -124,7 +124,7 @@ public class UserControllerTests {
     }
 
     @Test
-    public void post_ValidUserJsonObject_ReturnsUserWithId() throws Exception {
+    public void register_ValidUserJsonObject_ReturnsUserWithId() throws Exception {
         final User postUser = createTestUser();
         final User postUserCopyWithId = createTestUser();
         postUserCopyWithId.setId(UUID.randomUUID());

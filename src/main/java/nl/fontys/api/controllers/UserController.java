@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.Resources;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -21,11 +22,13 @@ import java.util.UUID;
 public class UserController {
     private IUserService userService;
     private ModelMapper modelMapper;
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserController(IUserService userService, ModelMapper modelMapper){
+    public UserController(IUserService userService, ModelMapper modelMapper, BCryptPasswordEncoder passwordEncoder){
         this.userService = userService;
         this.modelMapper = modelMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping()
@@ -45,7 +48,9 @@ public class UserController {
     }
 
     @PostMapping()
-    public UserResource post(@RequestBody @Valid User user){
+    public UserResource register(@RequestBody @Valid User user){
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPasswordConfirm(passwordEncoder.encode(user.getPassword()));
         return modelMapper.map(userService.save(user), UserResource.class);
     }
 

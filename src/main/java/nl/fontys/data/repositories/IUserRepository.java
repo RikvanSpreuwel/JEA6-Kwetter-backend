@@ -9,6 +9,7 @@ import java.util.UUID;
 
 public interface IUserRepository extends CrudRepository<User, UUID> {
     boolean existsByEmail(final String email);
+    boolean existsByUserName(final String userName);
     User findByEmailAndPassword(final String email, final String password);
     List<User> findAllByUserNameContaining(final String userName);
     Optional<User> findByUserName(final String userName);

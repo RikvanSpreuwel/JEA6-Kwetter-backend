@@ -1,4 +1,4 @@
-package nl.fontys.utils.modelmapper.converters;
+package nl.fontys.utils.modelMapper.converters;
 
 import nl.fontys.models.entities.Kwetter;
 import nl.fontys.models.entities.User;

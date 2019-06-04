@@ -49,6 +49,7 @@ public class UserService implements IUserService {
         if (user == null) throw new IllegalArgumentException("The given user cannot be null.");
         if (user.getId() != null) throw new IllegalArgumentException("A new user cannot have an UUID yet.");
         if (userRepository.existsByEmail(user.getEmail())) throw new IllegalArgumentException("This email is already in use.");
+        if (userRepository.existsByUserName(user.getUserName())) throw new IllegalArgumentException("This username is already in use.");
 
         return userRepository.save(user);
     }

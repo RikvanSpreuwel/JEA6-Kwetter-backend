@@ -1,4 +1,4 @@
-package nl.fontys.utils.modelmapper.converters;
+package nl.fontys.utils.modelMapper.converters;
 
 import nl.fontys.models.entities.Kwetter;
 import nl.fontys.models.entities.User;
@@ -20,12 +20,14 @@ public class ToUserResourceModelConverter extends AbstractConverter<User, UserRe
     }
 
     private List<UserResource> getUserResourcesWithoutRecursion(List<User> users) {
+        if (users == null) return null;
         return users.stream().map(user -> new UserResource(user.getId(), user.getPassword(), user.getEmail(), user.getFirstName(),
                 user.getLastName(), user.getUserName(), user.getDateOfBirth(), user.getBio(), user.getLocation(), user.getProfilePicture(),
                 user.getRole(), null, null, null)).collect(Collectors.toList());
     }
 
     private List<KwetterResource> getKwetterResourcesWithoutRecursion(List<Kwetter> kwetters) {
+        if (kwetters == null) return null;
         return kwetters.stream().map(kwetter -> new KwetterResource(kwetter.getId(), kwetter.getMessage(),
                 kwetter.getPostedOn(), null)).collect(Collectors.toList());
     }
