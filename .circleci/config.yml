@@ -24,13 +24,27 @@ workflows:
           context:
             Kwetter
 
-      - publish-dockerhub:
+      - approve-dockerhub-publish:
+          type: approval
+          requires:
+            - sonarqube
+
+      - publish-latest-dockerhub:
           filters:
             branches:
               only:
-                  - master
-                  - release
-                  - develop
+                  - approve-dockerhub-publish
+                  
+          requires:
+            - sonarqube
+          context:
+            Kwetter
+
+      - publish-version-dockerhub:
+          filters:
+            branches:
+              only:
+                  - approve-dockerhub-publish
                   
           requires:
             - sonarqube
@@ -59,11 +73,25 @@ commands:
       - restore_cache:
           key: kwetter-backend-{{ checksum "pom.xml" }}
 
-  publish_to_dockerhub:
+  publish_latest_to_dockerhub:
+    steps:          
+      - run:
+          name: Docker login
+          command: docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}"
+
+      - run:
+          name: Docker build image
+          command: docker build -t "${DOCKER_USERNAME}"/kwetter-backend:"${CIRCLE_BRANCH}"-latest .
+
+      - run:
+          name: Docker push
+          command: docker push "${DOCKER_USERNAME}"/kwetter-backend:"${CIRCLE_BRANCH}"-latest
+
+  publish_with_version_to_dockerhub:
     steps:
       - run:
           name: Save version environment variable
-          command:  echo 'export VERSION=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}')' >> $BASH_ENV
+          command:  echo 'export VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)' >> $BASH_ENV 
           
       - run:
           name: Docker login
@@ -71,30 +99,17 @@ commands:
 
       - run:
           name: Docker build image
-          command: docker build -t "${DOCKER_USERNAME}"/kwetter-backend:"${CIRCLE_BRANCH}"-"${CIRCLE_BUILD_NUM}" .
+          command: docker build -t "${DOCKER_USERNAME}"/kwetter-backend:"${CIRCLE_BRANCH}"-"${VERSION}" .
 
       - run:
           name: Docker push
-          command: docker push "${DOCKER_USERNAME}"/kwetter-backend:"${CIRCLE_BRANCH}"-"${CIRCLE_BUILD_NUM}"
+          command: docker push "${DOCKER_USERNAME}"/kwetter-backend:"${CIRCLE_BRANCH}"-"${VERSION}"
 
 jobs:
   checkout:
     executor: java
     steps:
       - checkout
-
-      - run:
-          name: Save version environment variable
-          command: echo 'export VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)' >> $BASH_ENV  
-          #echo 'export VERSION=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec 2>/dev/null)' >> $BASH_ENV
-          #  echo "$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' 
-          #  --non-recursive exec:exec 2>/dev/null)" >> ../kwetter-backend/version.txt
-        
-
-      - run:
-          name: check version
-          command: echo "${VERSION}"
-
       - persist_kwetter_workspace
 
   dependencies:
@@ -152,9 +167,16 @@ jobs:
               -Dsonar.host.url=https://sonarcloud.io \
               -Dsonar.login=$SONAR_LOGIN_BACKEND
 
-  publish-dockerhub:
+  publish-version-dockerhub:
     machine: true
     steps:
       - attach_kwetter_workspace
       - restore_cache_dependencies
-      - publish_to_dockerhub
+      - publish_with_version_to_dockerhub
+
+  publish-latest-dockerhub:
+    machine: true
+    steps:
+      - attach_kwetter_workspace
+      - restore_cache_dependencies
+      - publish_latest_to_dockerhub
