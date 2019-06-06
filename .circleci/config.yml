@@ -61,7 +61,7 @@ commands:
 
   publish_to_dockerhub:
     steps:
-       - run:
+      - run:
           name: Save version environment variable
           command:  echo 'export VERSION=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}')' >> $BASH_ENV
           
