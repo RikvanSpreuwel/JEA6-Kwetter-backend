@@ -1,6 +1,7 @@
 package nl.fontys.data.repositories;
 
 import nl.fontys.data.InMemoryCollectionsDatabase;
+import nl.fontys.data.services.interfaces.IMailService;
 import nl.fontys.models.entities.Kwetter;
 import nl.fontys.models.entities.User;
 import org.assertj.core.util.Lists;
@@ -10,6 +11,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
@@ -23,6 +25,9 @@ public class CollectionsKwetterRepositoryTests {
 
     @Autowired
     private CollectionsUserRepository userRepository;
+
+    @MockBean
+    private IMailService mailService;
 
     private InMemoryCollectionsDatabase datasource;
 

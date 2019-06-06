@@ -22,6 +22,11 @@ public class CollectionsUserRepository implements IUserRepository  {
     }
 
     @Override
+    public boolean existsByUserName(String userName) {
+        return false;
+    }
+
+    @Override
     public User findByEmailAndPassword(String email, String password) {
         return datasource.login(email, password);
     }

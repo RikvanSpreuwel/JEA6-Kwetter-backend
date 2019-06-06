@@ -20,6 +20,7 @@ public class UserResource extends ResourceSupport {
     private UUID userId;
     private String password;
     private String email;
+    private boolean verified;
     private String firstName;
     private String lastName;
     private String userName;
@@ -34,12 +35,13 @@ public class UserResource extends ResourceSupport {
     private List<UserResource> followers;
     private List<KwetterResource> kwetters;
 
-    public UserResource(UUID userId, String password, String email, String firstName, String lastName,
+    public UserResource(UUID userId, String password, String email, boolean verified, String firstName, String lastName,
                         String userName, Date dateOfBirth, String bio, String location, String profilePicture,
                         Role role, List<UserResource> following, List<UserResource> followers, List<KwetterResource> kwetters) {
         this.userId = userId;
         this.password = password;
         this.email = email;
+        this.verified = verified;
         this.firstName = firstName;
         this.lastName = lastName;
         this.userName = userName;
