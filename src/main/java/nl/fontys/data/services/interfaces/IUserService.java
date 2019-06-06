@@ -1,6 +1,6 @@
 package nl.fontys.data.services.interfaces;
 
-import nl.fontys.models.User;
+import nl.fontys.models.entities.User;
 
 import java.util.List;
 import java.util.UUID;
@@ -38,7 +38,16 @@ public interface IUserService {
      * @param user to be saved
      * @return the saved user and adds it's generated UUID
      */
-    User save(final User user);
+    User save(final User user, final String appUrl);
+
+    /**
+     * Verifies a users registration by setting the verified property on the user object to true
+     * only if the id corresponds to a user
+     *
+     * @param userId id of the user to verify
+     * @return a boolean to indicate if an account was found to verify
+     */
+    boolean verifyRegistration(final UUID userId);
 
     /**
      * Updates a user, throws an error if the given user does not already exist

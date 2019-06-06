@@ -1,8 +1,7 @@
 package nl.fontys.data.repositories;
 
 import nl.fontys.data.InMemoryCollectionsDatabase;
-import nl.fontys.models.User;
-import org.springframework.beans.factory.annotation.Autowired;
+import nl.fontys.models.entities.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -20,6 +19,11 @@ public class CollectionsUserRepository implements IUserRepository  {
     @Override
     public boolean existsByEmail(String email) {
         return datasource.isEmailInUse(email);
+    }
+
+    @Override
+    public boolean existsByUserName(String userName) {
+        return false;
     }
 
     @Override

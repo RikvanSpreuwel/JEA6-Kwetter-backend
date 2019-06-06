@@ -14,6 +14,8 @@ import java.io.IOException;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @WebFilter("/*")
 public class CustomCorsFilter implements Filter {
+    private static String ORIGIN = "Origin";
+
     @Override
     public void init(FilterConfig fc) throws ServletException {
     }
@@ -21,14 +23,15 @@ public class CustomCorsFilter implements Filter {
     @Override
     public void doFilter(ServletRequest req, ServletResponse resp,
                          FilterChain chain) throws IOException, ServletException {
-
         HttpServletResponse response = (HttpServletResponse) resp;
         HttpServletRequest request = (HttpServletRequest) req;
-        response.setHeader("Access-Control-Allow-Origin", "*");
+
+        response.setHeader("Access-Control-Allow-Origin", request.getHeader(ORIGIN) != null ? request.getHeader(ORIGIN) : "");
+        response.setHeader("Vary", ORIGIN);
         response.setHeader("Access-Control-Allow-Credentials", "true");
         response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE, PUT");
         response.setHeader("Access-Control-Max-Age", "3600");
-        response.setHeader("Access-Control-Allow-Headers", "Origin, origin, x-requested-with, authorization, Content-Type, Authorization, credential, X-XSRF-TOKEN");
+        response.setHeader("Access-Control-Allow-Headers", "Origin, origin, x-requested-with, authorization, Content-Type, Authorization, X-XSRF-TOKEN");
 
         if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
             response.setStatus(HttpServletResponse.SC_OK);

@@ -1,17 +1,13 @@
-package nl.fontys.models;
+package nl.fontys.models.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-//import io.swagger.annotations.ApiModelProperty;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
-import nl.fontys.Utils.Constants;
-import nl.fontys.Utils.JsonSerializers.KwetterListJsonSerializer;
-import nl.fontys.Utils.JsonSerializers.UserListJsonSerializer;
+import nl.fontys.utils.Constants;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
-import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -26,7 +22,11 @@ public class User {
     @Column(columnDefinition = "UUID")
     private UUID id;
 
-    @NotNull(message = "Password cannot be null.")
+    @JsonProperty("id")
+    public UUID getId(){
+        return this.id;
+    }
+
     @Size(min = 8, message = "Password has a minimum of 8 characters.")
     private String password;
 
@@ -37,6 +37,8 @@ public class User {
     @NotNull(message = "Email cannot be null.")
     @Email(regexp = Constants.EMAIL_REGEX, message = "Email should be valid")
     private String email;
+
+    private boolean verified;
 
     @NotNull(message = "FirstName cannot be null")
     private String firstName;
@@ -65,20 +67,18 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @JsonSerialize(using = UserListJsonSerializer.class)
     @JoinTable(name = "follow")
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
     private List<User> following;
 
-    @JsonSerialize(using = UserListJsonSerializer.class)
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.DETACH, mappedBy = "following")
     private List<User> followers;
 
-    @JsonSerialize(using = KwetterListJsonSerializer.class)
     @OneToMany(mappedBy = "author", fetch = FetchType.EAGER, orphanRemoval = true)
     private List<Kwetter> kwetters;
 
     public User() {
+        this.verified = false;
         this.following = new ArrayList<>();
         this.following = new ArrayList<>();
         this.kwetters = new ArrayList<>();
@@ -91,6 +91,7 @@ public class User {
                 @NotNull(message = "Location cannot be null") String location, @Nullable String profilePicture, Role role) {
         this.password = password;
         this.email = email;
+        this.verified = false;
         this.firstName = firstName;
         this.lastName = lastName;
         this.userName = userName;
@@ -176,15 +177,6 @@ public class User {
                 Objects.equals(profilePicture, user.profilePicture) &&
                 role == user.role;
     }
-
-    private boolean idEquals(UUID userId){
-        if (id == null || userId == null){
-            return (id == null && userId == null);
-        } else {
-            return id.equals(userId);
-        }
-    }
-
 
     @Override
     public int hashCode() {

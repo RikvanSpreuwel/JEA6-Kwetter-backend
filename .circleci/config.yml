@@ -1,29 +1,186 @@
-version: 2
-jobs:
-  build:
-    working_directory: ~/kwetter-backend
+version: 2.1
 
+workflows:
+  version: 2.1
+  build-test-deploy:
+    jobs:
+      - checkout
+
+      - dependencies:
+          requires:
+            - checkout
+
+      - build:
+          requires:
+            - dependencies
+      
+      - test:
+          requires:
+            - build
+
+      - sonarqube:
+          requires:
+            - test
+          context:
+            Kwetter
+
+      - approve-dockerhub-publish:
+          type: approval
+          requires:
+            - sonarqube
+
+      - publish-latest-dockerhub:
+          filters:
+            branches:
+              only:
+                  - master
+                  - release
+                  - develop
+                  
+          requires:
+            - approve-dockerhub-publish
+          context:
+            Kwetter
+
+      - publish-version-dockerhub:
+          filters:
+            branches:
+              only:
+                  - master
+                  - release
+                  - develop
+                  
+          requires:
+            - approve-dockerhub-publish
+          context:
+            Kwetter
+
+executors:
+  java:
     docker:
       - image: circleci/openjdk:8-jdk-browsers
 
+commands:
+  persist_kwetter_workspace:
     steps:
-      - checkout
+      - persist_to_workspace:
+          root: .
+          paths: .
+  
+  attach_kwetter_workspace:
+    steps:
+      - attach_workspace:
+          at: .
 
+  restore_cache_dependencies:
+    steps:
       - restore_cache:
           key: kwetter-backend-{{ checksum "pom.xml" }}
-      
+
+  publish_latest_to_dockerhub:
+    steps:          
+      - run:
+          name: Docker login
+          command: docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}"
+
+      - run:
+          name: Docker build image
+          command: docker build -t "${DOCKER_USERNAME}"/kwetter-backend:"${CIRCLE_BRANCH}"-latest .
+
+      - run:
+          name: Docker push
+          command: docker push "${DOCKER_USERNAME}"/kwetter-backend:"${CIRCLE_BRANCH}"-latest
+
+  publish_with_version_to_dockerhub:
+    steps:
+      - run:
+          name: Save version environment variable
+          command:  echo 'export VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)' >> $BASH_ENV 
+          
+      - run:
+          name: Docker login
+          command: docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}"
+
+      - run:
+          name: Docker build image
+          command: docker build -t "${DOCKER_USERNAME}"/kwetter-backend:"${CIRCLE_BRANCH}"-"${VERSION}" .
+
+      - run:
+          name: Docker push
+          command: docker push "${DOCKER_USERNAME}"/kwetter-backend:"${CIRCLE_BRANCH}"-"${VERSION}"
+
+jobs:
+  checkout:
+    executor: java
+    steps:
+      - checkout
+      - persist_kwetter_workspace
+
+  dependencies:
+    executor: java
+    steps:
+      - attach_kwetter_workspace
+      - restore_cache_dependencies
+
       - run: mvn dependency:go-offline
-      
+
       - save_cache:
           paths:
             - ~/.m2
           key: kwetter-backend-{{ checksum "pom.xml" }}
-      
-      - run: mvn package
-      
-      - store_test_results: 
-          path: target/surefire-reports
-      
-      - store_artifacts: 
-          path: target/demo-java-spring-0.0.1-SNAPSHOT.jar
-      # See https://circleci.com/docs/2.0/deployment-integrations/ for deploy examples 
+
+  build:
+    executor: java
+    steps: 
+      - attach_kwetter_workspace
+      - restore_cache_dependencies
+
+      - run:
+          name: building
+          command: mvn -B -DskipTests clean package
+
+      - persist_kwetter_workspace
+
+  test:
+    executor: java
+    steps:
+      - attach_kwetter_workspace
+      - restore_cache_dependencies
+
+      - run:
+          name: testing
+          command: mvn test
+
+      - store_test_results:
+          path: target/surefire-reports 
+
+      - persist_kwetter_workspace
+  
+  sonarqube:
+    executor: java
+    steps:
+      - attach_kwetter_workspace
+      - restore_cache_dependencies
+
+      - run:
+          name: sonarqube
+          command: |
+            mvn sonar:sonar \
+              -Dsonar.projectKey=RikvanSpreuwel_JEA6-Kwetter-backend \
+              -Dsonar.organization=rikvanspreuwel-github \
+              -Dsonar.host.url=https://sonarcloud.io \
+              -Dsonar.login=$SONAR_LOGIN_BACKEND
+
+  publish-version-dockerhub:
+    machine: true
+    steps:
+      - attach_kwetter_workspace
+      - restore_cache_dependencies
+      - publish_with_version_to_dockerhub
+
+  publish-latest-dockerhub:
+    machine: true
+    steps:
+      - attach_kwetter_workspace
+      - restore_cache_dependencies
+      - publish_latest_to_dockerhub

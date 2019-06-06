@@ -1,4 +1,4 @@
-package nl.fontys.models;
+package nl.fontys.models.entities;
 
 public enum Role {
     ROLE_USER,

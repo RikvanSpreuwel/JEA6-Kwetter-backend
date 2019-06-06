@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -23,7 +24,7 @@ public class AdminController {
         this.kwetterService = kwetterService;
     }
 
-    @RequestMapping
+    @GetMapping
     public String adminPanel(Model model, @RequestParam(required = false) UUID userId){
         if (userId != null)
             model.addAttribute("selectedUser", userService.findById(userId));

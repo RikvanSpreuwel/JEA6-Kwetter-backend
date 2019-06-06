@@ -1,21 +1,20 @@
 package nl.fontys.data.repositories;
 
-import nl.fontys.models.Role;
-import nl.fontys.models.User;
-import nl.fontys.utils.DatabaseEmptier;
+import nl.fontys.data.services.interfaces.IMailService;
+import nl.fontys.models.entities.Role;
+import nl.fontys.models.entities.User;
 import nl.fontys.utils.DatabaseInserter;
 import org.assertj.core.util.Lists;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
@@ -24,6 +23,9 @@ import java.util.UUID;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class JPAUserRepositoryTests {
+    @MockBean
+    private IMailService mailService;
+
     @Autowired
     private JPAUserRepository userRepository;
 
