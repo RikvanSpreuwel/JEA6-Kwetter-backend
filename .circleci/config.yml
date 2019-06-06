@@ -85,7 +85,10 @@ jobs:
 
       - run:
           name: Save version environment variable
-          command:  echo 'export VERSION=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}')' >> $BASH_ENV
+          command:  echo 'export VERSION=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec 2>/dev/null)' >> $BASH_ENV
+          #  echo "$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' 
+          #  --non-recursive exec:exec 2>/dev/null)" >> ../kwetter-backend/version.txt
+        
 
       - run:
           name: check version
