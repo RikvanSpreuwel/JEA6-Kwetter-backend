@@ -25,6 +25,13 @@ workflows:
             Kwetter
 
       - publish-dockerhub:
+          filters:
+            branches:
+              only:
+                  - master
+                  - release
+                  - develop
+                  
           requires:
             - sonarqube
           context:
