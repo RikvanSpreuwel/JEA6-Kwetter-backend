@@ -97,13 +97,13 @@ public class UserServiceTests {
     @Test
     public void save_UserNull(){
         expectIllegalArgumentException("The given user cannot be null.");
-        userService.save(null);
+        userService.save(null, "");
     }
 
     @Test
     public void save_UserAlreadyHasId(){
         expectIllegalArgumentException("A new user cannot have an UUID yet.");
-        userService.save(getFirstExistingUser());
+        userService.save(getFirstExistingUser(), "");
     }
 
     @Test
@@ -113,12 +113,12 @@ public class UserServiceTests {
         final User alreadyExistingEmailUser = getFirstExistingUser();
         alreadyExistingEmailUser.setId(null);
 
-        userService.save(alreadyExistingEmailUser);
+        userService.save(alreadyExistingEmailUser, "");
     }
 
     @Test
     public void save(){
-        final User user = userService.save(createTestUser());
+        final User user = userService.save(createTestUser(), "");
         Assert.assertNotNull(user);
         Assert.assertNotNull(user.getId());
         Assert.assertEquals(11, Lists.newArrayList(userRepository.findAll()).size());

@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 public class ToUserResourceModelConverter extends AbstractConverter<User, UserResource> {
     @Override
     protected UserResource convert(User user) {
-        return new UserResource(user.getId(), user.getPassword(), user.getEmail(), user.getFirstName(), user.getLastName(),
+        return new UserResource(user.getId(), user.getPassword(), user.getEmail(), user.isVerified(), user.getFirstName(), user.getLastName(),
                 user.getUserName(), user.getDateOfBirth(), user.getBio(), user.getLocation(), user.getProfilePicture(), user.getRole(),
                 getUserResourcesWithoutRecursion(user.getFollowing()),
                 getUserResourcesWithoutRecursion(user.getFollowers()),
@@ -21,7 +21,7 @@ public class ToUserResourceModelConverter extends AbstractConverter<User, UserRe
 
     private List<UserResource> getUserResourcesWithoutRecursion(List<User> users) {
         if (users == null) return null;
-        return users.stream().map(user -> new UserResource(user.getId(), user.getPassword(), user.getEmail(), user.getFirstName(),
+        return users.stream().map(user -> new UserResource(user.getId(), user.getPassword(), user.getEmail(), user.isVerified(), user.getFirstName(),
                 user.getLastName(), user.getUserName(), user.getDateOfBirth(), user.getBio(), user.getLocation(), user.getProfilePicture(),
                 user.getRole(), null, null, null)).collect(Collectors.toList());
     }

@@ -38,6 +38,8 @@ public class User {
     @Email(regexp = Constants.EMAIL_REGEX, message = "Email should be valid")
     private String email;
 
+    private boolean verified;
+
     @NotNull(message = "FirstName cannot be null")
     private String firstName;
 
@@ -76,6 +78,7 @@ public class User {
     private List<Kwetter> kwetters;
 
     public User() {
+        this.verified = false;
         this.following = new ArrayList<>();
         this.following = new ArrayList<>();
         this.kwetters = new ArrayList<>();
@@ -88,6 +91,7 @@ public class User {
                 @NotNull(message = "Location cannot be null") String location, @Nullable String profilePicture, Role role) {
         this.password = password;
         this.email = email;
+        this.verified = false;
         this.firstName = firstName;
         this.lastName = lastName;
         this.userName = userName;

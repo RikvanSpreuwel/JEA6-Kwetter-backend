@@ -129,7 +129,7 @@ public class UserControllerTests {
         final User postUserCopyWithId = createTestUser();
         postUserCopyWithId.setId(UUID.randomUUID());
 
-        given(userService.save(postUser)).willReturn(postUserCopyWithId);
+        given(userService.save(postUser, "")).willReturn(postUserCopyWithId);
         given(modelMapper.map(postUserCopyWithId, UserResource.class))
                 .willReturn(modelMapperForTesting.map(postUserCopyWithId, UserResource.class));
 

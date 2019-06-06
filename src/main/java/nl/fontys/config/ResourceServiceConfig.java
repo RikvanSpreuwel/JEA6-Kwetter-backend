@@ -33,6 +33,7 @@ public class ResourceServiceConfig extends ResourceServerConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, Constants.USER_API_BASE_ROUTE).permitAll()
+                .antMatchers(HttpMethod.GET, Constants.USER_API_BASE_ROUTE + "/verify/**").permitAll()
                 .anyRequest().authenticated();
     }
 }
