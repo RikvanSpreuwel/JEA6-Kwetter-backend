@@ -1,5 +1,6 @@
 package nl.fontys.data.services;
 
+import nl.fontys.data.services.interfaces.IMailService;
 import nl.fontys.utils.exceptions.UserNotFoundException;
 import nl.fontys.data.repositories.JPAKwetterRepository;
 import nl.fontys.data.repositories.JPAUserRepository;
@@ -16,6 +17,7 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -27,6 +29,9 @@ import java.util.UUID;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class UserServiceTests {
+    @MockBean
+    private IMailService mailService;
+
     @Autowired
     private JPAKwetterRepository kwetterRepository;
 

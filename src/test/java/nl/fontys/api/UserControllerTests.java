@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -43,6 +44,9 @@ public class UserControllerTests {
 
     @MockBean
     private ModelMapper modelMapper;
+
+    @MockBean
+    private BCryptPasswordEncoder passwordEncoder;
 
     private static ModelMapper modelMapperForTesting;
 
@@ -129,7 +133,8 @@ public class UserControllerTests {
         final User postUserCopyWithId = createTestUser();
         postUserCopyWithId.setId(UUID.randomUUID());
 
-        given(userService.save(postUser, "")).willReturn(postUserCopyWithId);
+        given(passwordEncoder.encode("newPassWord")).willReturn("newPassWord");
+        given(userService.save(postUser, "http://localhost/users")).willReturn(postUserCopyWithId);
         given(modelMapper.map(postUserCopyWithId, UserResource.class))
                 .willReturn(modelMapperForTesting.map(postUserCopyWithId, UserResource.class));
 

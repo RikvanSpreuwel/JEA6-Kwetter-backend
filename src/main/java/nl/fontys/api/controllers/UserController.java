@@ -50,6 +50,8 @@ public class UserController {
 
     @PostMapping()
     public UserResource register(@RequestBody @Valid User user, HttpServletRequest request){
+        String s =request.getRequestURL().toString();
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setPasswordConfirm(passwordEncoder.encode(user.getPassword()));
         return modelMapper.map(userService.save(user, request.getRequestURL().toString()), UserResource.class);
