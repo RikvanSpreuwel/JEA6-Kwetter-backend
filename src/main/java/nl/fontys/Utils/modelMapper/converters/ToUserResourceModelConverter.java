@@ -6,6 +6,7 @@ import nl.fontys.models.resources.KwetterResource;
 import nl.fontys.models.resources.UserResource;
 import org.modelmapper.AbstractConverter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,14 +21,14 @@ public class ToUserResourceModelConverter extends AbstractConverter<User, UserRe
     }
 
     private List<UserResource> getUserResourcesWithoutRecursion(List<User> users) {
-        if (users == null) return null;
+        if (users == null) return new ArrayList<>();
         return users.stream().map(user -> new UserResource(user.getId(), user.getPassword(), user.getEmail(), user.isVerified(), user.getFirstName(),
                 user.getLastName(), user.getUserName(), user.getDateOfBirth(), user.getBio(), user.getLocation(), user.getProfilePicture(),
                 user.getRole(), null, null, null)).collect(Collectors.toList());
     }
 
     private List<KwetterResource> getKwetterResourcesWithoutRecursion(List<Kwetter> kwetters) {
-        if (kwetters == null) return null;
+        if (kwetters == null) return new ArrayList<>();
         return kwetters.stream().map(kwetter -> new KwetterResource(kwetter.getId(), kwetter.getMessage(),
                 kwetter.getPostedOn(), null)).collect(Collectors.toList());
     }
