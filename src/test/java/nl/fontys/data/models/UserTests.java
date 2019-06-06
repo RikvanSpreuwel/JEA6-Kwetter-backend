@@ -1,5 +1,6 @@
 package nl.fontys.data.models;
 
+import nl.fontys.data.services.interfaces.IMailService;
 import nl.fontys.models.entities.Kwetter;
 import nl.fontys.models.entities.Role;
 import nl.fontys.models.entities.User;
@@ -11,6 +12,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.*;
@@ -18,6 +20,9 @@ import java.util.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class UserTests {
+    @MockBean
+    private IMailService mailService;
+
     private User user1;
     private User user2;
 

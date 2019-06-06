@@ -1,6 +1,7 @@
 package nl.fontys.data.services;
 
 import com.google.common.collect.Lists;
+import nl.fontys.data.services.interfaces.IMailService;
 import nl.fontys.utils.EmailValidator;
 import nl.fontys.utils.exceptions.UserNotFoundException;
 import nl.fontys.data.repositories.IUserRepository;
@@ -11,15 +12,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
 public class UserService implements IUserService {
     private IUserRepository userRepository;
+    private IMailService mailService;
 
     @Autowired
-    public UserService(JPAUserRepository userRepository){
+    public UserService(JPAUserRepository userRepository, IMailService mailService){
         this.userRepository = userRepository;
+        this.mailService = mailService;
     }
 
     @Override
@@ -45,12 +49,36 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User save(final User user) {
+    public User save(final User user, final String appUrl) {
         if (user == null) throw new IllegalArgumentException("The given user cannot be null.");
         if (user.getId() != null) throw new IllegalArgumentException("A new user cannot have an UUID yet.");
         if (userRepository.existsByEmail(user.getEmail())) throw new IllegalArgumentException("This email is already in use.");
+        if (userRepository.existsByUserName(user.getUserName())) throw new IllegalArgumentException("This username is already in use.");
 
-        return userRepository.save(user);
+        user.setVerified(false);
+
+        final User savedUser = userRepository.save(user);
+        mailService.sendMail(savedUser.getEmail(), "Registration confirmation", createConfirmationURL(savedUser, appUrl));
+
+        return savedUser;
+    }
+
+    private String createConfirmationURL(final User user, final String appUrl){
+        return "Welcome to Kwetter " + user.getUserName() + ", please verify your email by clicking on the following link: " +
+                appUrl + "/verify/" + user.getId();
+    }
+
+    @Override
+    public boolean verifyRegistration(UUID userId) {
+        Optional<User> optionalUserToVerify = userRepository.findById(userId);
+
+        if (!optionalUserToVerify.isPresent()) throw new UserNotFoundException(userId);
+
+        User userToVerify = optionalUserToVerify.get();
+        userToVerify.setVerified(true);
+        userRepository.save(userToVerify);
+
+        return true;
     }
 
     @Override

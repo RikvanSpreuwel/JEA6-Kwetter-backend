@@ -1,5 +1,6 @@
 package nl.fontys.data.repositories;
 
+import nl.fontys.data.services.interfaces.IMailService;
 import nl.fontys.models.entities.Kwetter;
 import nl.fontys.models.entities.User;
 import nl.fontys.utils.DatabaseInserter;
@@ -10,6 +11,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -20,6 +22,9 @@ import java.util.UUID;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class JPAKwetterRepositoryTests {
+    @MockBean
+    private IMailService mailService;
+
     @Autowired
     private JPAKwetterRepository kwetterRepository;
 

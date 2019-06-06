@@ -10,8 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.Resources;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
@@ -21,11 +23,13 @@ import java.util.UUID;
 public class UserController {
     private IUserService userService;
     private ModelMapper modelMapper;
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserController(IUserService userService, ModelMapper modelMapper){
+    public UserController(IUserService userService, ModelMapper modelMapper, BCryptPasswordEncoder passwordEncoder){
         this.userService = userService;
         this.modelMapper = modelMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping()
@@ -45,8 +49,10 @@ public class UserController {
     }
 
     @PostMapping()
-    public UserResource post(@RequestBody @Valid User user){
-        return modelMapper.map(userService.save(user), UserResource.class);
+    public UserResource register(@RequestBody @Valid User user, HttpServletRequest request){
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPasswordConfirm(passwordEncoder.encode(user.getPassword()));
+        return modelMapper.map(userService.save(user, request.getRequestURL().toString()), UserResource.class);
     }
 
     @PutMapping()
@@ -65,10 +71,14 @@ public class UserController {
     }
 
     @GetMapping(value = "/getcurrentuser")
-    public @ResponseBody
-    UserResource getCurrentUser(Authentication authentication) {
+    public UserResource getCurrentUser(Authentication authentication) {
         final String username = (String) authentication.getPrincipal();
 
         return userService.findAllByUserName(username).isEmpty() ? null : modelMapper.map(userService.findAllByUserName(username).get(0), UserResource.class);
+    }
+
+    @GetMapping(value = "/verify/{id}")
+    public boolean verifyRegistration(@PathVariable UUID id) {
+        return userService.verifyRegistration(id);
     }
 }

@@ -7,8 +7,8 @@ import nl.fontys.data.services.UserService;
 import nl.fontys.models.entities.Role;
 import nl.fontys.models.entities.User;
 import nl.fontys.utils.JsonSerializer;
-import nl.fontys.utils.modelmapper.converters.ToKwetterResourceModelConverter;
-import nl.fontys.utils.modelmapper.converters.ToUserResourceModelConverter;
+import nl.fontys.utils.modelMapper.converters.ToKwetterResourceModelConverter;
+import nl.fontys.utils.modelMapper.converters.ToUserResourceModelConverter;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -43,6 +44,9 @@ public class UserControllerTests {
 
     @MockBean
     private ModelMapper modelMapper;
+
+    @MockBean
+    private BCryptPasswordEncoder passwordEncoder;
 
     private static ModelMapper modelMapperForTesting;
 
@@ -124,12 +128,13 @@ public class UserControllerTests {
     }
 
     @Test
-    public void post_ValidUserJsonObject_ReturnsUserWithId() throws Exception {
+    public void register_ValidUserJsonObject_ReturnsUserWithId() throws Exception {
         final User postUser = createTestUser();
         final User postUserCopyWithId = createTestUser();
         postUserCopyWithId.setId(UUID.randomUUID());
 
-        given(userService.save(postUser)).willReturn(postUserCopyWithId);
+        given(passwordEncoder.encode("newPassWord")).willReturn("newPassWord");
+        given(userService.save(postUser, "http://localhost/users")).willReturn(postUserCopyWithId);
         given(modelMapper.map(postUserCopyWithId, UserResource.class))
                 .willReturn(modelMapperForTesting.map(postUserCopyWithId, UserResource.class));
 
