@@ -61,6 +61,10 @@ commands:
 
   publish_to_dockerhub:
     steps:
+       - run:
+          name: Save version environment variable
+          command:  echo 'export VERSION=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}')' >> $BASH_ENV
+          
       - run:
           name: Docker login
           command: docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}"
@@ -78,6 +82,15 @@ jobs:
     executor: java
     steps:
       - checkout
+
+      - run:
+          name: Save version environment variable
+          command:  echo 'export VERSION=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}')' >> $BASH_ENV
+
+      - run:
+          name: check version
+          command: echo "${VERSION}"
+
       - persist_kwetter_workspace
 
   dependencies:
