@@ -33,10 +33,12 @@ workflows:
           filters:
             branches:
               only:
-                  - approve-dockerhub-publish
+                  - master
+                  - release
+                  - develop
                   
           requires:
-            - sonarqube
+            - approve-dockerhub-publish
           context:
             Kwetter
 
@@ -44,10 +46,12 @@ workflows:
           filters:
             branches:
               only:
-                  - approve-dockerhub-publish
+                  - master
+                  - release
+                  - develop
                   
           requires:
-            - sonarqube
+            - approve-dockerhub-publish
           context:
             Kwetter
 
