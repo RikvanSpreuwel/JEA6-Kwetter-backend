@@ -14,10 +14,10 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
         config.enableSimpleBroker("/topic");
         config.setApplicationDestinationPrefixes("/app");
     }
-
+    //TODO: fix this shit with cors
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/tweets").setAllowedOrigins("http://localhost:4200", "http://localhost:80", "http://localhost");
-        registry.addEndpoint("/tweets").setAllowedOrigins("http://localhost:4200", "http://localhost:80", "http://localhost").withSockJS();
+        registry.addEndpoint("/tweets").setAllowedOrigins("http://localhost:4200", "http://localhost:80", "http://localhost", "http://68.183.145.94:80");
+        registry.addEndpoint("/tweets").setAllowedOrigins("http://localhost:4200", "http://localhost:80", "http://localhost", "http://68.183.145.94:80").withSockJS();
     }
 }
