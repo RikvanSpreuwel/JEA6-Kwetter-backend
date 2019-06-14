@@ -44,7 +44,7 @@ public class KwetterServiceTests {
 
     @Before
     public void setup(){
-        // DatabaseInserter.insertMockData(kwetterRepository, userRepository);
+        DatabaseInserter.insertMockData(kwetterRepository, userRepository);
     }
 
     @Rule

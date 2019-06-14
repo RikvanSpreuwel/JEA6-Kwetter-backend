@@ -24,11 +24,6 @@ workflows:
           context:
             Kwetter
 
-      - approve-dockerhub-publish:
-          type: approval
-          requires:
-            - sonarqube
-
       - publish-latest-dockerhub:
           filters:
             branches:
@@ -38,7 +33,7 @@ workflows:
                   - develop
                   
           requires:
-            - approve-dockerhub-publish
+            - sonarqube
           context:
             Kwetter
 
@@ -51,7 +46,7 @@ workflows:
                   - develop
                   
           requires:
-            - approve-dockerhub-publish
+            - sonarqube
           context:
             Kwetter
 
